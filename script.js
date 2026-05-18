@@ -60,33 +60,14 @@ document.querySelectorAll("[data-open-legal]").forEach((link) => {
 });
 
 if (contactForm && formStatus) {
-  contactForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    if (!contactForm.checkValidity()) {
-      formStatus.textContent = "Please complete the required fields.";
-      contactForm.reportValidity();
-      return;
-    }
-
-    const formData = new FormData(contactForm);
-    const recipient = contactForm.getAttribute("data-recipient") || "hello@dialreturn.com";
-    const subject = encodeURIComponent("DialReturn demo request");
-    const body = encodeURIComponent(
-      [
-        `Name: ${formData.get("name") || ""}`,
-        `Email: ${formData.get("email") || ""}`,
-        `Phone: ${formData.get("phone") || ""}`,
-        `Company: ${formData.get("company") || ""}`,
-        "",
-        `Message: ${formData.get("message") || ""}`,
-      ].join("\n")
-    );
-
-    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
-    formStatus.textContent = "Your email client should open with the demo request.";
-    contactForm.reset();
+  contactForm.addEventListener("submit", () => {
+    formStatus.textContent = "Sending...";
+    setTimeout(() => {
+      formStatus.textContent = "Thanks — we received your message.";
+      contactForm.reset();
+    }, 600);
   });
 }
+
 
 reveal();
